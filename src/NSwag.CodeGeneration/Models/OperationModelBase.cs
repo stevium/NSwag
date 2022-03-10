@@ -118,13 +118,16 @@ namespace NSwag.CodeGeneration.Models
 
                 var isNullable = response.Value.IsNullable(_settings.CodeGeneratorSettings.SchemaType);
                 var schemaHasTypeNameTitle = response.Value.Schema?.HasTypeNameTitle;
-                var hint = schemaHasTypeNameTitle != true ? "Response" : null;
+                var hint = schemaHasTypeNameTitle != true ? NoTitleTypeHint : null;
+                
                 return _generator.GetTypeName(response.Value.Schema, isNullable, hint);
             }
         }
 
         /// <summary>Gets a value indicating whether the result has description.</summary>
         public bool HasResultDescription => !string.IsNullOrEmpty(ResultDescription);
+
+        public string NoTitleTypeHint => $"{OperationName.Substring(HttpMethodLower.Length)}Response";
 
         /// <summary>Gets or sets the result description.</summary>
         public string ResultDescription

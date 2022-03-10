@@ -64,7 +64,10 @@ namespace NSwag.CodeGeneration.Models
         /// <summary>Gets the type of the response.</summary>
         public string Type =>
             _response.IsBinary(_operation) ? _generator.GetBinaryResponseTypeName() :
-            _generator.GetTypeName(ActualResponseSchema, IsNullable, "Response");
+            _generator.GetTypeName(
+                ActualResponseSchema,
+                IsNullable,
+                (_operationModel as OperationModelBase<ParameterModelBase, ResponseModelBase>)?.NoTitleTypeHint ?? "Response");
 
         /// <summary>Gets a value indicating whether the response has a type (i.e. not void).</summary>
         public bool HasType => ActualResponseSchema != null;
@@ -80,7 +83,11 @@ namespace NSwag.CodeGeneration.Models
                 return ActualResponseSchema != null &&
                       (ActualResponseSchema.Format == JsonFormatStrings.Date ||
                        ActualResponseSchema.Format == JsonFormatStrings.DateTime) &&
-                       _generator.GetTypeName(ActualResponseSchema, IsNullable, "Response") != "string";
+                       _generator.GetTypeName(
+                           ActualResponseSchema,
+                           IsNullable,
+                           (_operationModel as OperationModelBase<ParameterModelBase, ResponseModelBase>)?.NoTitleTypeHint ?? "Response"
+                      ) != "string";
             }
         }
 
